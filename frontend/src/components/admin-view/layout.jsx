@@ -9,9 +9,9 @@ const layout = () => {
 
             <section className="adminLayout w-100 h-screen flex">
 
-                <div className='w-1/3 bg-black text-white py-4'>
+                
                     <AdminSidebar />
-                </div>
+                
                 <div className='w-2/3'>
 
                     <AdminHeader />

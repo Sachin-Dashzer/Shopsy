@@ -25,8 +25,10 @@ import CheckAuth from './components/common/checkAuth.jsx'
 
 const App = () => {
 
-  const isAuthenticated = false
-  const user = null
+  const isAuthenticated = true
+  const user = {
+    role : 'admin'
+  }
 
 
   return (
