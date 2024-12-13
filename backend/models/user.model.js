@@ -13,34 +13,37 @@ const userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    profile : {
-        type : String,
-        unique : true  
-    },
     password: {
         type: String,
-        required: true
+        required: [true , "Password is required"]
     },
     role: {
         type: String,
         default: "user"
     },
-    age: {
-        type: Number,
-        default: 18
-    },
-    gender: {
-        type: String,
-        default: "male"
-    },
-    contact: {
-        type: Number,
-        required: true
-    
-    }
+    refreshToken:{
+        type : String
+    }   
 },{
     timestamps : true
 })
+
+
+userSchema.pre("save" , async(next)=>{
+
+    if(!this.isModified("password")){
+        return next();
+    }
+    this.password = await bcrypt.hash(this.password, 12)
+    next();
+})
+
+userSchema.methods.isCorrectPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+
+
 
 
 

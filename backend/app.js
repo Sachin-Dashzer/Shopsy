@@ -26,5 +26,12 @@ app.use(express.static('public'));
 
 
 
+import authRouter from './routes/auth.router.js'
+
+
+
+app.use('/auth', authRouter);
+
+
 
 export default app;

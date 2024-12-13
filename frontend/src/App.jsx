@@ -22,6 +22,7 @@ import NotFound from './pages/not-found/notFound.jsx'
 
 import CheckAuth from './components/common/checkAuth.jsx'
 
+import HeroSection from './pages/Home/Herobanner.jsx'
 
 const App = () => {
 
@@ -34,9 +35,10 @@ const App = () => {
   return (
     <>
 
-      <h1>Header file</h1>
 
       <Routes>
+
+        <Route path='/' element={<HeroSection />} />
 
         <Route path='/auth' element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
