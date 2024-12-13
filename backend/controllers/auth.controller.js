@@ -7,16 +7,16 @@ import { User } from '../models/user.model.js'
 
 const registerUser = asyncHandler(async (req, res) => {
 
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     if (
-        [name, email, password].some((field) => field?.trim() === "")
+        [username, email, password].some((field) => field?.trim() === "")
     ) {
         throw new apiError(404, "Every field is required")
     }
 
     const existedUser = await User.findOne({
-        $or: [{ name }, { email }]
+        $or: [{ username }, { email }]
     }); 
     
     if (existedUser) {
@@ -25,14 +25,14 @@ const registerUser = asyncHandler(async (req, res) => {
     
 
     const newuser = await User.create({
-        name,
+        username,
         email ,
         password
     })
 
 
     const createduser = await User.findById(newuser._id).select(
-        "-password -refreshToken"
+        "-password -email"
     )
 
     if(!createduser){
@@ -40,10 +40,60 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     return res.status(201).json(
-        new apiResponse(200 , createduser , "everything good boy")
+        new apiResponse(200 , createduser , "New user added")
     )
 
 
 })
 
-export default registerUser;
+
+
+
+
+
+
+const loginUser = asyncHandler(async (req , res)=>{
+
+
+    const {email , password} = req.body;
+
+    if([email , password].some((field)=>field?.trim() === "")){
+        throw new apiError(302 , "All Field Required")
+    }
+
+    const foundUser = await User.findOne({ email })
+
+    if(!foundUser){
+        throw new apiError(304 , "Email doen't exists")
+    }
+
+    const checkPassword = await foundUser.isCorrectPassword(password);
+
+    if(!checkPassword){
+        throw new apiError(308 , "invalid password")
+    }
+
+    const createduser = await User.findById(foundUser._id).select(
+        "-password -email"
+    )
+
+    if(!createduser){
+        throw new apiError(500 , "server error")
+    }
+
+    return res.status(201).json(
+        new apiResponse(200 , createduser , "Loggin succesfully")
+    )
+
+})
+
+
+
+
+
+
+
+
+
+
+export {registerUser , loginUser};

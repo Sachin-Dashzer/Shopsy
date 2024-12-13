@@ -1,41 +1,41 @@
-import mongoose , {Schema} from "mongoose";
-
+import mongoose, { Schema } from "mongoose";
+import bcrypt from "bcryptjs"
 
 
 const userSchema = mongoose.Schema({
-    name: {
-        type : String,
-        required: true,
-        trim: true
-    },
-    email : {
+    username: {
         type: String,
         required: true,
         trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        unique : true
     },
     password: {
         type: String,
-        required: [true , "Password is required"]
+        required: [true, "Password is required"]
     },
     role: {
         type: String,
         default: "user"
     },
-    refreshToken:{
-        type : String
-    }   
-},{
-    timestamps : true
+    refreshToken: {
+        type: String
+    }
+}, {
+    timestamps: true
 })
 
 
-userSchema.pre("save" , async(next)=>{
-
-    if(!this.isModified("password")){
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
         return next();
     }
     this.password = await bcrypt.hash(this.password, 12)
-    next();
+    next()
 })
 
 userSchema.methods.isCorrectPassword = async function (password) {
@@ -47,4 +47,4 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 
 
-export const User = mongoose.model("User" , userSchema )
+export const User = mongoose.model("User", userSchema)

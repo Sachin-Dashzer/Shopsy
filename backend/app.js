@@ -29,6 +29,10 @@ app.use(express.static('public'));
 import authRouter from './routes/auth.router.js'
 
 
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+
 
 app.use('/auth', authRouter);
 
