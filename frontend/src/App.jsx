@@ -26,7 +26,7 @@ import HeroSection from './pages/Home/Herobanner.jsx'
 
 const App = () => {
 
-  const isAuthenticated = true
+  const isAuthenticated = false
   const user = {
     role : 'admin'
   }

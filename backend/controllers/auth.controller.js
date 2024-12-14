@@ -7,16 +7,17 @@ import { User } from '../models/user.model.js'
 
 const registerUser = asyncHandler(async (req, res) => {
 
-    const { username, email, password } = req.body;
+    const { userName, email, password } = req.body;
+
 
     if (
-        [username, email, password].some((field) => field?.trim() === "")
+        [userName, email, password].some((field) => field?.trim() === "")
     ) {
         throw new apiError(404, "Every field is required")
     }
 
     const existedUser = await User.findOne({
-        $or: [{ username }, { email }]
+        $or: [{ userName }, { email }]
     }); 
     
     if (existedUser) {
@@ -25,7 +26,7 @@ const registerUser = asyncHandler(async (req, res) => {
     
 
     const newuser = await User.create({
-        username,
+        userName,
         email ,
         password
     })

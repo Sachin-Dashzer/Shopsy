@@ -2,16 +2,46 @@ import React, { useState } from 'react'
 import { registerFormControls } from '../../config/index.js'
 import CommonForm from '../../components/common/form.jsx'
 
+import { useDispatch } from 'react-redux'
+import { registerUser } from '@/store/auth/index.js'
+import { useNavigate } from 'react-router-dom'
+
 
 
 const initialState = {
-  userName : "",
+  userName: "",
   email: "",
   password: ""
 }
 
 const register = () => {
   const [formData, setformData] = useState(initialState)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { toast } = useToast()
+
+
+  const onsubmit = (event) => {
+
+    event.preventDefault()
+
+    dispatch(registerUser(formData)).then((data) => {
+
+      if (data?.payload?.success) {
+      
+        navigate("/auth/login");
+      } else {
+        console.log(data)
+      }
+
+    })
+
+
+  }
+
+
+
 
   return (
     <>
@@ -25,7 +55,7 @@ const register = () => {
           buttonText="Sign in"
           formData={formData}
           setFormData={setformData}
-        // onSubmit = {onsubmit}
+          onSubmit={onsubmit}
         />
 
         <p className="text-center text-sm text-gray-400">
