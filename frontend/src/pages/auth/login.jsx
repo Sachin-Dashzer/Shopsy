@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { loginFormControls } from '../../config/index.js'
 import CommonForm from '../../components/common/form.jsx'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '@/store/auth/index.js'
+
 
 
 
@@ -12,6 +15,18 @@ const initialState = {
 const login = () => {
 
   const [formData, setformData] = useState(initialState)
+  const dispatch = useDispatch()
+  
+
+  const onsubmit = (event)=>{
+
+    event.preventDefault();
+
+    dispatch(loginUser(formData)).then((data)=>{
+      console.log(data)
+    })
+
+  }
 
 
   return (
@@ -26,9 +41,9 @@ const login = () => {
           buttonText="Sign up"
           formData={formData}
           setFormData={setformData}
-        // onSubmit = {onsubmit}
+          onSubmit={onsubmit}
         />
-        
+
         <p className="text-center text-sm text-gray-400">
           Don't have an account?{' '}
           <a href="/auth/register" className="text-pink-500 hover:underline">

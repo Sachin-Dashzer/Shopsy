@@ -19,7 +19,6 @@ const register = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { toast } = useToast()
 
 
   const onsubmit = (event) => {
